@@ -151,14 +151,31 @@ volatile bool mpuInterrupt = false;     // indicates whether MPU interrupt pin h
 void dmpDataReady() {
     mpuInterrupt = true;
 }
+// Servo and other variables initialization
+#include <Servo.h> 
+ 
+Servo base;
+Servo middle;
+Servo pitch;
 
-
+float pos_base = 95; 
+float pos_middle = 90;
+float pos_pitch = 90;
+int count;
+float error;
 
 // ================================================================
 // ===                      INITIAL SETUP                       ===
 // ================================================================
 
 void setup() {
+  //servo setup 
+  base.attach(9);
+  middle.attach(10);
+  pitch.attach(11);
+  base.write(95);
+  middle.write(90);
+  pitch.write(90);
     // join I2C bus (I2Cdev library doesn't do this automatically)
     #if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
         Wire.begin();
@@ -198,11 +215,12 @@ void setup() {
     devStatus = mpu.dmpInitialize();
 
     // supply your own gyro offsets here, scaled for min sensitivity
-    mpu.setXGyroOffset(220);
-    mpu.setYGyroOffset(76);
-    mpu.setZGyroOffset(-85);
-    mpu.setZAccelOffset(1788); // 1688 factory default for my test chip
-
+    mpu.setXGyroOffset(70);
+    mpu.setYGyroOffset(-30);
+    mpu.setZGyroOffset(-29);
+    mpu.setZAccelOffset(972); // 1688 factory default for my test chip
+    mpu.setXAccelOffset(126);
+    mpu.setYAccelOffset(-572);
     // make sure it worked (returns 0 if so)
     if (devStatus == 0) {
         // turn on the DMP, now that it's ready
@@ -313,12 +331,12 @@ void loop() {
             mpu.dmpGetQuaternion(&q, fifoBuffer);
             mpu.dmpGetGravity(&gravity, &q);
             mpu.dmpGetYawPitchRoll(ypr, &q, &gravity);
-            Serial.print("ypr\t");
-            Serial.print(ypr[0] * 180/M_PI);
-            Serial.print("\t");
-            Serial.print(ypr[1] * 180/M_PI);
-            Serial.print("\t");
-            Serial.println(ypr[2] * 180/M_PI);
+            //Serial.print("ypr\t");
+            //Serial.print(ypr[0] * 180/M_PI);
+            //Serial.print("\t");
+            //Serial.print(ypr[1] * 180/M_PI);
+            //Serial.print("\t");
+            //Serial.println(ypr[2] * 180/M_PI);
         #endif
 
         #ifdef OUTPUT_READABLE_REALACCEL
@@ -368,5 +386,24 @@ void loop() {
         // blink LED to indicate activity
         blinkState = !blinkState;
         digitalWrite(LED_PIN, blinkState);
+
+
+        
+count = count+1;
+if(count%5==0)
+{
+  Serial.print("roll pos_pitch");
+  Serial.print("\t");
+  Serial.print(ypr[2] * 180/M_PI);
+  error = ypr[2] * 180/M_PI;
+  pos_pitch = pos_pitch+int(error);
+  Serial.print("\t");
+  Serial.println(pos_pitch);
+  pitch.write(pos_pitch);
+  delay(2);
+}
+
+
+        
     }
 }
