@@ -64,32 +64,12 @@ void loop()
        pos_base=pos_base_prev;
        update=0;
  }
-    if(pos_base_prev<pos_base)
-      { for(int i=pos_base_prev; i<=pos_base; ++i)
-          {base.write(i);
+    
+          base.write(pos_base*(180.0/3.14));
             delay(10);
-          }
-      }
-    else
-    {for(int i=pos_base_prev; i>=pos_base; --i)
-          {base.write(i);
+        middle.write(90.0-(pos_middle*(180.0/3.14)));
             delay(10);
-          }
-    }
-    if(pos_middle_prev<pos_middle)
-   {  for(int i=pos_middle_prev; i<=pos_base; ++i)
-          {middle.write(i);
-            delay(10);
-          }
-      }
-    else
-    {for(int i=pos_middle_prev; i>=pos_middle; --i)
-          {middle.write(90-i);
-            delay(10);
-          }
-    }
-    //middle.write(90.0-(pos_middle*(180.0/3.14)));
-    //delay(200);
+          
     if(update==1)
     {
       pos_middle_prev=pos_middle;
