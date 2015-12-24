@@ -400,7 +400,6 @@ if(count%5==0)
   Serial.print("\t");
   Serial.println(pos_pitch);
   pitch.write(pos_pitch);
-  delay(2);
 }
 
 
