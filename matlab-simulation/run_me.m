@@ -6,7 +6,7 @@ thi = [60,60]*pi/180;
 l=[7,7];
 th_prev=thi;
 %Plot workspace
-% plotworkspace(l)
+plotworkspace(l)
 while 1
     
     prompt = 'Enter coordinates to go to: ';
@@ -14,12 +14,13 @@ while 1
     [th,update] = performIK(x,l,th_prev);
     
     animate(th,l);
-    display 'angles: '
-    disp(th*(180/pi))
+    
     if update==1     
         th_prev=th;
+        display 'angles: '
+        disp(th*(180/pi))
     else
-        display('retry: ')
+        display('retry ')
     end
 
 end
