@@ -6,7 +6,7 @@ if (x^2 + y^2)^(1/2) <=2*l(1)
 
     th2 = 2*acos(((x.^2 + y.^2)^(1/2))/(2*l(1)));
     th1 = atan2(y,x) - (th2/2);
-    if(th2>=0 && th2<=pi && th1>=0 && th1<=pi)
+    if(th2>=0 && th2<=pi && th1>=0 && th1<=pi) %Servo angle limits
      th=[th1;th2];
      update=1;
     else
