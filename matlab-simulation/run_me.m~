@@ -1,0 +1,17 @@
+
+% Robot initial position
+thi = [30,60];
+% Robot params
+l=[7,7];
+while 1
+    
+    %GET USER COORDINATE INPUTS
+    input = [500;14];
+    
+    th = performIK(input,l);
+    if animate
+    animate(th,l);
+    
+
+end
+   
